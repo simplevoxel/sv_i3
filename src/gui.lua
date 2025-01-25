@@ -448,10 +448,10 @@ local function get_container(fs, data, player, yoffset, ctn_len, award_list, awa
 	box(0, yextra + 0.45, ctn_len, 0.045, "#bababa50")
 	image((data.subcat - 1) * 1.18, yextra + 0.45, 1, 0.045, PNG.highlight)
 
-	local function not_installed(modname)
+	local function not_installed(modname, short)
 		hypertext(0, yextra + 0.9, ctn_len, 0.6, "not_installed",
-			fmt("<global size=16><center><style color=%s font=mono>%s</style> not installed</center>",
-				colors.blue, modname))
+			fmt("<global size=16><center><style color=%s font=mono>%s</style></center>",
+				colors.blue, modname, short and "" or " not installed"))
 	end
 
 	if data.subcat == 1 then
@@ -500,7 +500,7 @@ local function get_container(fs, data, player, yoffset, ctn_len, award_list, awa
 
 	elseif data.subcat == 3 then
 		if not i3.modules.skins then
-			return not_installed "skinsdb"
+			return not_installed "See edit skin", true
 		end
 
 		local _skins = skins.get_skinlist_for_player(data.player_name)
@@ -869,7 +869,7 @@ local function get_tooltip(item, info, lang_code)
 		end
 	end
 
-	return fmt("tooltip[%s;%s;#32333899;#fff]", item, ESC(tooltip))
+	return fmt("tooltip[%s;%s\n%s;#32333899;#fff]", item, ESC(tooltip), clr("#aaa",item))
 end
 
 local function get_true_count(data, count, is_recipe, is_usage)
@@ -1454,7 +1454,7 @@ local function get_header_items_fs(fs, data)
 		image_button(X + 0.35, 0.32, 0.35, 0.35, "", "search", "")
 		fs("tooltip[search;%s;#32333899;#fff]", FS("Search"))
 
-		if data.enable_search then
+		if true then
 			fs"style[filter;font_size=18]"
 			fs("field[%f,0.2;3.35,0.6;filter;;%s]", X + 0.85, ESC(data.filter))
 			fs"field_close_on_enter[filter;false]"
